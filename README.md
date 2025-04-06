@@ -158,6 +158,54 @@ GROUP BY
 - **Tableau**: Подключение через JDBC/ODBC. Использование MDX для кастомных мер.  
 
 ## Оптимизация и администрирование
+Стратегии партиционирования  
+- По дате: Разделение факт-таблиц по годам/кварталам  
+- По бизнес-сущностям: Например, отдельные партиции по регионам  
+- Hot/Cold данные: Активные данные на SSD, архив на HDD
+
+**Пример (SQL Server)**
+```
+-- Создание партиционированной таблицы
+CREATE PARTITION FUNCTION pf_ByYear (int)
+AS RANGE RIGHT FOR VALUES (2020, 2021, 2022, 2023)
+
+CREATE PARTITION SCHEME ps_ByYear
+AS PARTITION pf_ByYear
+TO (fg_2020, fg_2021, fg_2022, fg_2023, fg_Current)
+```
+Выбор типа хранения  
+Columnstore - Факт-таблицы, аналитика - SQL Server Columnstore  
+Rowstore - Таблицы измерений - Классические B-деревья  
+Aggregations - Предрасчитанные итоги - SSAS Aggregations  
+
+Materialized Views (Pre-aggregations). Технологии: SSAS: Aggregations, Oracle: Materialized Views, ClickHouse: AggregatingMergeTree
+Пример:  
+```
+-- Oracle Materialized View
+CREATE MATERIALIZED VIEW mv_sales_monthly
+REFRESH COMPLETE ON DEMAND
+AS 
+SELECT 
+  TRUNC(sale_date, 'MONTH') AS month,
+  product_id,
+  SUM(amount) AS total_amount
+FROM sales
+GROUP BY TRUNC(sale_date, 'MONTH'), product_id;
+```
+Паттерны для ускорения: Избегайте CROSSJOIN с большими измерениями. Используйте NON EMPTY в MDX. В DAX применяйте CALCULATE с фильтрами вместо вложенных FILTER.
+
+Плохой MDX:  
+```
+SELECT {[Measures].[Sales]} ON 0,
+CrossJoin([Product].[Category].Members, [Date].[Year].Members) ON 1
+FROM [Cube]
+```
+Оптимизированный MDX:
+```
+SELECT {[Measures].[Sales]} ON 0,
+NON EMPTY [Product].[Category].Members * [Date].[Year].Members ON 1
+FROM [Cube]
+```
 
 ## Интеграция с BI-инструментами
 
