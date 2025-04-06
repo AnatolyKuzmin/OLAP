@@ -277,4 +277,4 @@ AT(TIMESTAMP => DATEADD(HOUR, -2, CURRENT_TIMESTAMP()));
 ```
 - Runbook для поддержки. Инструкции по устранению инцидентов. Контакты ответственных.
 
-## Проект
+## [End-to-End OLAP для розничной сети](https://github.com/AnatolyKuzmin/OLAP/tree/main/End-to-End)
