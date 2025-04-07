@@ -14,6 +14,10 @@
 ```
 python generate_data.py
 ```
+Файл `coffee.db` с таблицами:
+- products (товары)
+- shops (кофейни)
+- sales (продажи)
 
 Шаг 3. Проверка данных
 Для проверки можно использовать DB Browser for SQLite.
