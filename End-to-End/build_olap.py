@@ -5,6 +5,12 @@ import sqlite3
 sqlite_conn = sqlite3.connect('coffee.db')
 duckdb_conn = duckdb.connect('coffee_olap.duckdb')
 
+# Удаляем старые таблицы, если они существуют
+duckdb_conn.execute('DROP TABLE IF EXISTS products')
+duckdb_conn.execute('DROP TABLE IF EXISTS shops')
+duckdb_conn.execute('DROP TABLE IF EXISTS sales')
+duckdb_conn.execute('DROP VIEW IF EXISTS sales_cube')
+
 # Загрузка данных из SQLite в DuckDB
 duckdb_conn.execute('''
 CREATE TABLE products AS 
