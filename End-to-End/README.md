@@ -52,3 +52,8 @@ python build_olap.py
 ```
 python -c "import duckdb; conn = duckdb.connect('coffee_olap.duckdb'); print(conn.sql('SELECT * FROM sales_cube LIMIT 5').fetchall())"
 ```
+![image](https://github.com/user-attachments/assets/0c358d84-02da-4bb3-a0b5-1a5c05bda7d3)
+
+## Автоматическое обновление OLAP-куба
+
+
