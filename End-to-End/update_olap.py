@@ -1,46 +1,53 @@
 import duckdb
 import sqlite3
-from datetime import datetime, timedelta
 
-def update_olap():
+def sync_by_id():
     # Подключение к базам
     sqlite_conn = sqlite3.connect('coffee.db')
     duckdb_conn = duckdb.connect('coffee_olap.duckdb')
     
-    # 1. Получаем дату последней продажи в OLAP
-    last_date = duckdb_conn.sql('''
-    SELECT MAX(CAST(sale_date AS DATE)) 
+    # 1. Получаем максимальный ID в OLAP
+    max_olap_id = duckdb_conn.sql('''
+    SELECT COALESCE(MAX(sale_id), 0) 
     FROM sales
-    ''').fetchone()[0] or '2000-01-01'
+    ''').fetchone()[0]
     
-    # 2. Загружаем новые данные из SQLite
-    new_sales = sqlite_conn.execute(f'''
+    # 2. Загружаем недостающие данные из SQLite
+    missing_data = sqlite_conn.execute(f'''
     SELECT * FROM sales 
-    WHERE date(sale_date) > date('{last_date}')
+    WHERE sale_id > {max_olap_id}
+    ORDER BY sale_id
     ''').fetchall()
     
-    # 3. Добавляем новые данные в DuckDB
-    if new_sales:
+    # 3. Добавляем недостающие записи
+    if missing_data:
         duckdb_conn.execute('BEGIN TRANSACTION')
-        duckdb_conn.executemany('''
-        INSERT INTO sales VALUES (?, ?, ?, ?, ?)
-        ''', new_sales)
         
-        # 4. Обновляем справочники (полная перезагрузка)
-        duckdb_conn.execute('DELETE FROM products')
-        duckdb_conn.execute('''
-        INSERT INTO products 
-        SELECT * FROM sqlite_scan('coffee.db', 'products')
+        # Вставка порциями по 100 записей
+        batch_size = 100
+        for i in range(0, len(missing_data), batch_size):
+            batch = missing_data[i:i + batch_size]
+            duckdb_conn.executemany('''
+            INSERT INTO sales VALUES (?, ?, ?, ?, ?)
+            ''', batch)
+        
+        # 4. Проверяем расхождения (опционально)
+        olap_count = duckdb_conn.sql('SELECT COUNT(*) FROM sales').fetchone()[0]
+        sqlite_count = sqlite_conn.execute('SELECT COUNT(*) FROM sales').fetchone()[0]
+        
+        print(f'''
+        Обновление завершено:
+        - Добавлено записей: {len(missing_data)}
+        - Всего в OLAP: {olap_count}
+        - Всего в источнике: {sqlite_count}
         ''')
         
         duckdb_conn.execute('COMMIT')
-        print(f"Добавлено {len(new_sales)} новых записей")
     else:
-        print("Нет новых данных для обновления")
+        print("Данные уже синхронизированы")
     
-    # 5. Обновляем представление куба (автоматически в DuckDB)
     duckdb_conn.close()
     sqlite_conn.close()
 
 if __name__ == '__main__':
-    update_olap()
+    sync_by_id()
