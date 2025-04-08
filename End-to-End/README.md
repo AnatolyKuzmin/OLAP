@@ -63,3 +63,20 @@ python -c "import duckdb; conn = duckdb.connect('coffee_olap.duckdb'); print(con
 
 Шаг 1. Создаем скрипт обновления  
 Скрипт для обновления [update_olap.py](https://github.com/AnatolyKuzmin/OLAP/blob/main/End-to-End/update_olap.py)
+
+Шаг 2. Тестируем обновление  
+Добавим новые данные в SQLite:
+```
+python -c "import sqlite3; conn = sqlite3.connect('coffee.db'); conn.execute('INSERT INTO sales VALUES (?, ?, ?, ?, ?)', [(1001, 2, 1, '2024-05-02', 1), (1002, 3, 2, '2024-05-03', 2)]); conn.commit(); conn.close()"
+"
+```
+Запускаем скрипт для обнлваения OLAP
+```
+python update_olap.py
+```
+![image](https://github.com/user-attachments/assets/94cbbd4f-d955-41ad-b052-eb8070f26309)
+
+Шаг 3. Проверяем результат
+```
+python -c "import duckdb; conn = duckdb.connect('coffee_olap.duckdb'); print(conn.sql('SELECT COUNT(*) FROM sales').fetchall())"
+```
