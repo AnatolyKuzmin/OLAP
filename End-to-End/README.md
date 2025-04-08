@@ -56,4 +56,10 @@ python -c "import duckdb; conn = duckdb.connect('coffee_olap.duckdb'); print(con
 
 ## Автоматическое обновление OLAP-куба
 
+Цель: Создать Python-скрипт для регулярного обновления данных с возможностью:
+- Добавления новых продаж
+- Обновления справочников
+- Пересчета агрегаций
 
+Шаг 1. Создаем скрипт обновления  
+Скрипт для обновления [update_olap.py](https://github.com/AnatolyKuzmin/OLAP/blob/main/End-to-End/update_olap.py)
