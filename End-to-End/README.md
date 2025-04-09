@@ -80,3 +80,12 @@ python update_olap.py
 ```
 python -c "import duckdb; conn = duckdb.connect('coffee_olap.duckdb'); print(conn.sql('SELECT COUNT(*) FROM sales').fetchall())"
 ```
+
+## Настройка Metabase для анализа OLAP-данных
+
+Цель: Визуализировать данные из DuckDB через Metabase с созданием:
+- Дашборда с KPI
+- Интерактивных отчетов
+- Дриллдауна по иерархиям
+
+Шаг 1. Установка Metabase
