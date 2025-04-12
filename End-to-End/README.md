@@ -98,6 +98,8 @@ python -c "import duckdb; conn = duckdb.connect('coffee_olap.duckdb'); print(con
    - Database: Укажите полный путь к файлу coffee_olap.duckdb (например, C:\Users\Anatolii\CoffeeAnalytics\coffee_olap.duckdb)
 4. Нажмите Test Connection → OK.
 
+Подробная инструкция: [Настройка](https://github.com/AnatolyKuzmin/OLAP/blob/main/End-to-End/DSN_for_DuckDB.md) DSN (Data Source Name) для DuckDB в Windows
+
 Шаг 3. Подключение Power BI к DuckDB
 
 Шаг 4. Создание отчета
