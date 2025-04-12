@@ -90,7 +90,13 @@ python -c "import duckdb; conn = duckdb.connect('coffee_olap.duckdb'); print(con
 Шаг 1. Установка драйвера DuckDB для Power BI  
 Скачайте и установите ODBC-драйвер DuckDB для [Windows](https://duckdb.org/docs/stable/clients/odbc/windows)
 
-Шаг 2. Настройка DSN (Data Source Name)
+Шаг 2. Настройка DSN (Data Source Name)  
+1. Откройте ODBC Data Source Administrator (через поиск Windows).
+2. Перейдите на вкладку System DSN → Add.
+3. Выберите драйвер DuckDB и укажите параметры:
+   - Data Source Name: CoffeeAnalytics
+   - Database: Укажите полный путь к файлу coffee_olap.duckdb (например, C:\Users\Anatolii\CoffeeAnalytics\coffee_olap.duckdb)
+4. Нажмите Test Connection → OK.
 
 Шаг 3. Подключение Power BI к DuckDB
 
