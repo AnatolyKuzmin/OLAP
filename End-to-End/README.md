@@ -87,7 +87,8 @@ python -c "import duckdb; conn = duckdb.connect('coffee_olap.duckdb'); print(con
 - Дашборда с KPI
 - Интерактивных отчетов
 
-Шаг 1. Установка драйвера DuckDB для Power BI
+Шаг 1. Установка драйвера DuckDB для Power BI  
+Скачайте и установите ODBC-драйвер DuckDB для [Windows](https://duckdb.org/docs/stable/clients/odbc/windows)
 
 Шаг 2. Настройка DSN (Data Source Name)
 
