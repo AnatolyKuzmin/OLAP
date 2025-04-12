@@ -81,11 +81,16 @@ python update_olap.py
 python -c "import duckdb; conn = duckdb.connect('coffee_olap.duckdb'); print(conn.sql('SELECT COUNT(*) FROM sales').fetchall())"
 ```
 
-## Настройка Metabase для анализа OLAP-данных
+##  Настройка Excel для работы с OLAP-данными
 
-Цель: Визуализировать данные из DuckDB через Metabase с созданием:
+Цель: Визуализировать данные из DuckDB через Power BI с созданием:
 - Дашборда с KPI
 - Интерактивных отчетов
-- Дриллдауна по иерархиям
 
-Шаг 1. Установка Metabase
+Шаг 1. Установка драйвера DuckDB для Power BI
+
+Шаг 2. Настройка DSN (Data Source Name)
+
+Шаг 3. Подключение Power BI к DuckDB
+
+Шаг 4. Создание отчета
