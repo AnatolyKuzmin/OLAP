@@ -108,4 +108,11 @@ python -c "import duckdb; conn = duckdb.connect('coffee_olap.duckdb'); print(con
 3. В окне Navigator выберите таблицы
 4. Нажмите Load, чтобы загрузить данные.
 
-Шаг 4. Создание отчета
+Шаг 4. Создание отчета  
+Пример 1: Анализ продаж по месяцам. На панели Visualizations выберите Line Chart. Настройте поля: Ось X: month (из sales_cube), Ось Y: total_revenue (сумма), Легенда: product (для разбивки по товарам)  
+Пример 2: Карта магазинов. Выберите Map Visual. Настройте: Location: city (из shops), Size: total_revenue (из sales_cube)  
+Пример 3: Топ-3 товара. Выберите Table Visual. Добавьте поля: product, total_revenue (сумма). Отсортируйте по убыванию выручки.  
+
+Шаг 5. Публикация отчета (опционально)  
+1. Нажмите Publish → выберите рабочую область в Power BI Service.  
+2. Настройте автоматическое обновление (через Power BI Gateway, если нужно).
