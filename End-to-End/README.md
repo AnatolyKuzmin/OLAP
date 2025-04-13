@@ -101,5 +101,11 @@ python -c "import duckdb; conn = duckdb.connect('coffee_olap.duckdb'); print(con
 Подробная инструкция: [Настройка](https://github.com/AnatolyKuzmin/OLAP/blob/main/End-to-End/DSN_for_DuckDB.md) DSN (Data Source Name) для DuckDB в Windows
 
 Шаг 3. Подключение Power BI к DuckDB
+1. Откройте Power BI Desktop.
+2. Get Data → ODBC → Connect. Выберите DSN CoffeeAnalytics
+![image](https://github.com/user-attachments/assets/a7238490-1e4e-4d93-9227-e910b2333ec8)
+![image](https://github.com/user-attachments/assets/9a7a597b-ad70-4101-bbab-a7326d9c93fa)
+3. В окне Navigator выберите таблицы
+4. Нажмите Load, чтобы загрузить данные.
 
 Шаг 4. Создание отчета
